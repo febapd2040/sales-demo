@@ -83,8 +83,8 @@ with tab2:
 
     st.write("Coefficients show associations, not proof of cause and effect. "
              f"Only {len(data)} records, test set of {len(y_test)}, so metrics are noisy.")
-
-        st.subheader("Correlation-based business insights")
+    
+    st.subheader("Correlation-based business insights")
     for col in features:
         corr_value = correlation.loc[col, "Sales"]
         st.write(f"**{col}** → {insight(corr_value)} (corr = {corr_value:.2f})")
@@ -96,7 +96,6 @@ with tab2:
                "standard deviation increase in that feature, while the other "
                "features are held constant. These are associations, not proof "
                "of cause and effect.")
-
 # ---- Tab 3: raw data and scatter plots ----
 with tab3:
     st.dataframe(data)
