@@ -20,6 +20,20 @@ data = load_data()
 features = ["Ad_Spend", "Price", "Economy", "Competition"]
 X, y = data[features], data["Sales"]
 
+correlation = data.corr(numeric_only=True)
+
+def insight(corr):
+    if corr > 0.7:
+        return "Strong positive relationship"
+    elif corr > 0.3:
+        return "Moderate positive relationship"
+    elif corr < -0.7:
+        return "Strong negative relationship"
+    elif corr < -0.3:
+        return "Moderate negative relationship"
+    else:
+        return "Weak or no linear relationship"
+
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42)
 
@@ -69,6 +83,19 @@ with tab2:
 
     st.write("Coefficients show associations, not proof of cause and effect. "
              f"Only {len(data)} records, test set of {len(y_test)}, so metrics are noisy.")
+
+        st.subheader("Correlation-based business insights")
+    for col in features:
+        corr_value = correlation.loc[col, "Sales"]
+        st.write(f"**{col}** → {insight(corr_value)} (corr = {corr_value:.2f})")
+
+    st.subheader("Model coefficients")
+    for feature, coefficient in zip(features, coefficients):
+        st.write(f"**{feature}:** {coefficient:.3f}")
+    st.caption("A coefficient estimates the change in predicted Sales for a one "
+               "standard deviation increase in that feature, while the other "
+               "features are held constant. These are associations, not proof "
+               "of cause and effect.")
 
 # ---- Tab 3: raw data and scatter plots ----
 with tab3:
